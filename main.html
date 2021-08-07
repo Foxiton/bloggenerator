@@ -1,0 +1,75 @@
+
+<style>
+    .mainheading{
+        color: blue;
+        background-color: yellow;
+        font-size: 40px;
+        font-weight: bolder;
+    }
+    .subheading{
+        color: green;
+        font-size: 22px;
+    }
+    .paragraph{
+        color:red;
+        font-size: 15px;
+    }
+</style>
+<body>
+    <div id = 'mainform'>
+        <button onclick="generate()" id='generator'>generate</button>
+    </div>
+<script>
+
+
+function download(content, fileName, fileType) {
+  var link = document.getElementById("generator");
+  var file = new Blob([content], {type: fileType});
+  var donwloadFile = fileName + "." + fileType;
+  link.href = URL.createObjectURL(file);
+  link.download = donwloadFile
+}
+    function generate(){
+        document.getElementById('data').remove()
+        document.getElementById('tagtype').remove()
+        document.getElementById('generator').remove()
+        document.getElementById('submit').remove()
+    }
+    function submit(){
+        console.log('yes')
+        tagtype=document.getElementById('tagtype').value
+        data=document.getElementById('data').value
+        div=document.createElement('div')
+        div.setAttribute('class',tagtype)
+        div.innerHTML=data
+        document.getElementById('data').remove()
+        document.getElementById('tagtype').remove()
+        document.getElementById('submit').remove()
+        document.getElementById('mainform').append(div)
+        createnewmain()
+    }
+    function createnewmain(){
+    maindiv=document.createElement('div')
+    selecttag=document.createElement('select')
+    selecttag.setAttribute('id','tagtype')
+    options=['subheading','mainheading','image','paragraph']
+    for(i=0;i<options.length;i++){
+        option=document.createElement('option')
+        option.setAttribute('value',options[i])
+        option.innerHTML=options[i]
+        selecttag.append(option)
+    }
+    maindiv.append(selecttag)
+    inputtag=document.createElement('textarea')
+    inputtag.setAttribute('id','data')
+    button=document.createElement('button')
+    button.innerHTML='Submit'
+    button.setAttribute('id','submit')
+    button.setAttribute('onclick','submit()')
+    maindiv.append(inputtag)
+    maindiv.append(button)
+    document.getElementById('mainform').append(maindiv)
+    }
+    createnewmain()
+</script>
+</body>
