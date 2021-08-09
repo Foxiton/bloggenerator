@@ -11,20 +11,19 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .mainheading {
-            color: blue;
-            background-color: yellow;
             font-size: 40px;
             font-weight: bolder;
+            text-align: center;
         }
 
         .subheading {
-            color: green;
             font-size: 22px;
+            font-weight: bold;
         }
 
         .paragraph {
-            color: red;
             font-size: 15px;
+            padding-top: 5px;
         }
     </style>
 </head>
@@ -54,8 +53,8 @@
         </div>
     </div>
 
-    <div id='mainform' class="container border col-lg-8 my-5">
-        <button onclick="generate()" id='generator'>generate</button>
+    <div id='mainform' class="container border-left border-right col-lg-8 my-5">
+        <button onclick="generate()" class="btn" id='generator'>Generate</button>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -90,7 +89,7 @@
         function createnewmain() {
             maindiv = document.createElement('div')
             selecttag = document.createElement('select')
-            selecttag.classList.add("form-group", "form-select-lg", "mb-3")
+            selecttag.classList.add("btn", "bg-light", "my-3")
             selecttag.setAttribute('id', 'tagtype')
             options = ['subheading', 'mainheading', 'image', 'paragraph']
             for (i = 0; i < options.length; i++) {
@@ -101,8 +100,10 @@
             }
             maindiv.append(selecttag)
             inputtag = document.createElement('textarea')
+            inputtag.classList.add("form-control", "mb-3")
             inputtag.setAttribute('id', 'data')
             button = document.createElement('button')
+            button.classList.add("btn", "bg-light", "mb-3")
             button.innerHTML = 'Submit'
             button.setAttribute('id', 'submit')
             button.setAttribute('onclick', 'submit()')
