@@ -1,75 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-    .mainheading{
-        color: blue;
-        background-color: yellow;
-        font-size: 40px;
-        font-weight: bolder;
-    }
-    .subheading{
-        color: green;
-        font-size: 22px;
-    }
-    .paragraph{
-        color:red;
-        font-size: 15px;
-    }
-</style>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .mainheading {
+            color: blue;
+            background-color: yellow;
+            font-size: 40px;
+            font-weight: bolder;
+        }
+
+        .subheading {
+            color: green;
+            font-size: 22px;
+        }
+
+        .paragraph {
+            color: red;
+            font-size: 15px;
+        }
+    </style>
+</head>
+
 <body>
-    <div id = 'mainform'>
+    <div class="page-wrapper">
+        <div class="nav-wrapper">
+            <div class="grad-bar"></div>
+            <nav class="navbar">
+                <h1 class="img font-weight-bold d-none d-sm-none d-md-none d-lg-block">Foxiton Blog Generator</h1>
+                <h1 class="img font-weight-bold d-block d-sm-block d-md-block d-lg-none">Foxiton</h1>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <ul class="nav no-search">
+                    <li class="nav-item"><a href="#">Home</a></li>
+                    <li class="nav-item"><a href="#">About</a></li>
+                    <li class="nav-item"><a href="#">Work</a></li>
+                    <li class="nav-item"><a href="#">Careers</a></li>
+                    <li class="nav-item"><a href="#">Contact Us</a></li>
+                    <i class="fas fa-search" id="search-icon"></i>
+                    <input class="search-input" type="text" placeholder="Search..">
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div id='mainform' class="container border col-lg-8 my-5">
         <button onclick="generate()" id='generator'>generate</button>
     </div>
-<script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
 
-function download(content, fileName, fileType) {
-  var link = document.getElementById("generator");
-  var file = new Blob([content], {type: fileType});
-  var donwloadFile = fileName + "." + fileType;
-  link.href = URL.createObjectURL(file);
-  link.download = donwloadFile
-}
-    function generate(){
-        document.getElementById('data').remove()
-        document.getElementById('tagtype').remove()
-        document.getElementById('generator').remove()
-        document.getElementById('submit').remove()
-    }
-    function submit(){
-        console.log('yes')
-        tagtype=document.getElementById('tagtype').value
-        data=document.getElementById('data').value
-        div=document.createElement('div')
-        div.setAttribute('class',tagtype)
-        div.innerHTML=data
-        document.getElementById('data').remove()
-        document.getElementById('tagtype').remove()
-        document.getElementById('submit').remove()
-        document.getElementById('mainform').append(div)
+        function download(content, fileName, fileType) {
+            var link = document.getElementById("generator");
+            var file = new Blob([content], { type: fileType });
+            var donwloadFile = fileName + "." + fileType;
+            link.href = URL.createObjectURL(file);
+            link.download = donwloadFile
+        }
+        function generate() {
+            document.getElementById('data').remove()
+            document.getElementById('tagtype').remove()
+            document.getElementById('generator').remove()
+            document.getElementById('submit').remove()
+        }
+        function submit() {
+            console.log('yes')
+            tagtype = document.getElementById('tagtype').value
+            data = document.getElementById('data').value
+            div = document.createElement('div')
+            div.setAttribute('class', tagtype)
+            div.innerHTML = data
+            document.getElementById('data').remove()
+            document.getElementById('tagtype').remove()
+            document.getElementById('submit').remove()
+            document.getElementById('mainform').append(div)
+            createnewmain()
+        }
+        function createnewmain() {
+            maindiv = document.createElement('div')
+            selecttag = document.createElement('select')
+            selecttag.classList.add("form-group", "form-select-lg", "mb-3")
+            selecttag.setAttribute('id', 'tagtype')
+            options = ['subheading', 'mainheading', 'image', 'paragraph']
+            for (i = 0; i < options.length; i++) {
+                option = document.createElement('option')
+                option.setAttribute('value', options[i])
+                option.innerHTML = options[i]
+                selecttag.append(option)
+            }
+            maindiv.append(selecttag)
+            inputtag = document.createElement('textarea')
+            inputtag.setAttribute('id', 'data')
+            button = document.createElement('button')
+            button.innerHTML = 'Submit'
+            button.setAttribute('id', 'submit')
+            button.setAttribute('onclick', 'submit()')
+            maindiv.append(inputtag)
+            maindiv.append(button)
+            document.getElementById('mainform').append(maindiv)
+        }
         createnewmain()
-    }
-    function createnewmain(){
-    maindiv=document.createElement('div')
-    selecttag=document.createElement('select')
-    selecttag.setAttribute('id','tagtype')
-    options=['subheading','mainheading','image','paragraph']
-    for(i=0;i<options.length;i++){
-        option=document.createElement('option')
-        option.setAttribute('value',options[i])
-        option.innerHTML=options[i]
-        selecttag.append(option)
-    }
-    maindiv.append(selecttag)
-    inputtag=document.createElement('textarea')
-    inputtag.setAttribute('id','data')
-    button=document.createElement('button')
-    button.innerHTML='Submit'
-    button.setAttribute('id','submit')
-    button.setAttribute('onclick','submit()')
-    maindiv.append(inputtag)
-    maindiv.append(button)
-    document.getElementById('mainform').append(maindiv)
-    }
-    createnewmain()
-</script>
+
+
+
+
+        $("#search-icon").click(function () {
+            $(".nav").toggleClass("search");
+            $(".nav").toggleClass("no-search");
+            $(".search-input").toggleClass("search-active");
+        });
+
+        $('.menu-toggle').click(function () {
+            $(".nav").toggleClass("mobile-nav");
+            $(this).toggleClass("is-active");
+        });
+    </script>
 </body>
+
+</html>
