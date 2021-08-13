@@ -52,26 +52,26 @@
             </nav>
         </div>
     </div>
-
+<div>
     <div id='mainform' class="container border-left border-right col-lg-8 my-5">
-        <button onclick="generate()" class="btn" id='generator'>Generate</button>
     </div>
-
+        <button onclick="generate()" class="btn" id='generator'>Generate</button>
+</div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
-        function download(content, fileName, fileType) {
-            var link = document.getElementById("generator");
-            var file = new Blob([content], { type: fileType });
-            var donwloadFile = fileName + "." + fileType;
-            link.href = URL.createObjectURL(file);
-            link.download = donwloadFile
-        }
+        count=1        
         function generate() {
             document.getElementById('data').remove()
             document.getElementById('tagtype').remove()
             document.getElementById('generator').remove()
             document.getElementById('submit').remove()
+        }
+        function deleteElement(eleid){
+            document.getElementById(eleid).remove()
+        }
+        function editElement(eleid){
+            
         }
         function submit() {
             console.log('yes')
@@ -79,11 +79,21 @@
             data = document.getElementById('data').value
             div = document.createElement('div')
             div.setAttribute('class', tagtype)
+            div.setAttribute('id', 'element'+count)
             div.innerHTML = data
+            editbutton=document.createElement('button')
+            editbutton.setAttribute('onclick', "editElement('element"+count+"')")
+            editbutton.innerHTML ='Edit' 
+            div.append(editbutton)
+            delbutton=document.createElement('button')
+            delbutton.setAttribute('onclick', "deleteElement('element"+count+"')")
+            delbutton.innerHTML ='Delete' 
+            div.append(delbutton)
             document.getElementById('data').remove()
             document.getElementById('tagtype').remove()
             document.getElementById('submit').remove()
             document.getElementById('mainform').append(div)
+            count=count+1
             createnewmain()
         }
         function createnewmain() {
