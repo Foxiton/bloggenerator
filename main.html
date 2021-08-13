@@ -59,7 +59,38 @@
 </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        function getmaindiv(clsname,innerText,eleid){
 
+            maindiv = document.createElement('div')
+            selecttag = document.createElement('select')
+            maindiv.setAttribute('id','maindiv')
+            selecttag.classList.add("btn", "bg-light", "my-3")
+            selecttag.setAttribute('id', 'tagtype')
+            options = ['subheading', 'mainheading', 'image', 'paragraph']
+            for (i = 0; i < options.length; i++) {
+                option = document.createElement('option')
+                option.setAttribute('value', options[i])
+                if (options[i]==clsname){
+                    option.setAttribute('selected',"")
+                }
+                option.innerHTML = options[i]
+                selecttag.append(option)
+            }
+            maindiv.append(selecttag)
+            inputtag = document.createElement('textarea')
+            inputtag.setAttribute('value',innerText)
+            inputtag.innerHTML=innerText
+            inputtag.classList.add("form-control", "mb-3")
+            inputtag.setAttribute('id', 'data')
+            button = document.createElement('button')
+            button.classList.add("btn", "bg-light", "mb-3")
+            button.innerHTML = 'Submit'
+            button.setAttribute('id', 'submit')
+            button.setAttribute('onclick', 'submit("'+eleid+'")')
+            maindiv.append(inputtag)
+            maindiv.append(button)
+            return maindiv
+        }
         count=1        
         editstate=false
         function generate() {
@@ -90,33 +121,7 @@
             innerText=innercontent.slice(0,innercontent_index)
 
             insidediv.remove()
-            maindiv = document.createElement('div')
-            selecttag = document.createElement('select')
-            selecttag.classList.add("btn", "bg-light", "my-3")
-            selecttag.setAttribute('id', 'tagtype')
-            options = ['subheading', 'mainheading', 'image', 'paragraph']
-            for (i = 0; i < options.length; i++) {
-                option = document.createElement('option')
-                option.setAttribute('value', options[i])
-                if (options[i]==clsname){
-                    option.setAttribute('selected',"")
-                }
-                option.innerHTML = options[i]
-                selecttag.append(option)
-            }
-            maindiv.append(selecttag)
-            inputtag = document.createElement('textarea')
-            inputtag.setAttribute('value',innerText)
-            inputtag.innerHTML=innerText
-            inputtag.classList.add("form-control", "mb-3")
-            inputtag.setAttribute('id', 'data')
-            button = document.createElement('button')
-            button.classList.add("btn", "bg-light", "mb-3")
-            button.innerHTML = 'Submit'
-            button.setAttribute('id', 'submit')
-            button.setAttribute('onclick', 'submit("'+eleid+'")')
-            maindiv.append(inputtag)
-            maindiv.append(button)
+            maindiv=getmaindiv(clsname,innerText,eleid)
             document.getElementById('mainform').append(maindiv)
             outsidediv.append(maindiv)
         }
@@ -164,6 +169,7 @@
             }
         }
         function createnewmain() {
+            /*
             maindiv = document.createElement('div')
             maindiv.setAttribute('id', 'maindiv')
             selecttag = document.createElement('select')
@@ -187,6 +193,8 @@
             button.setAttribute('onclick', 'submit("None")')
             maindiv.append(inputtag)
             maindiv.append(button)
+            */
+            maindiv=getmaindiv("","","None")
             document.getElementById('mainform').append(maindiv)
         }
         createnewmain()
