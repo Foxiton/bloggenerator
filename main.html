@@ -61,6 +61,7 @@
     <script>
 
         count=1        
+        editstate=false
         function generate() {
             document.getElementById('data').remove()
             document.getElementById('tagtype').remove()
@@ -69,35 +70,102 @@
         }
         function deleteElement(eleid){
             document.getElementById(eleid).remove()
+            //document.getElementById('maindiv').style.display="block"
         }
         function editElement(eleid){
-            
+            if (editstate==false){
+                editstate=true
+            }
+            else{
+                alert('Can only edit 1 element at a time')
+                return
+            }
+            document.getElementById('maindiv').style.display="none"
+            outsidediv=document.getElementById(eleid)
+            insidediv=outsidediv.getElementsByTagName('div')[0]
+            clsname=insidediv.className
+            console.log(clsname)
+            innercontent=insidediv.innerHTML
+            innercontent_index=innercontent.indexOf('<')
+            innerText=innercontent.slice(0,innercontent_index)
+
+            insidediv.remove()
+            maindiv = document.createElement('div')
+            selecttag = document.createElement('select')
+            selecttag.classList.add("btn", "bg-light", "my-3")
+            selecttag.setAttribute('id', 'tagtype')
+            options = ['subheading', 'mainheading', 'image', 'paragraph']
+            for (i = 0; i < options.length; i++) {
+                option = document.createElement('option')
+                option.setAttribute('value', options[i])
+                if (options[i]==clsname){
+                    option.setAttribute('selected',"")
+                }
+                option.innerHTML = options[i]
+                selecttag.append(option)
+            }
+            maindiv.append(selecttag)
+            inputtag = document.createElement('textarea')
+            inputtag.setAttribute('value',innerText)
+            inputtag.innerHTML=innerText
+            inputtag.classList.add("form-control", "mb-3")
+            inputtag.setAttribute('id', 'data')
+            button = document.createElement('button')
+            button.classList.add("btn", "bg-light", "mb-3")
+            button.innerHTML = 'Submit'
+            button.setAttribute('id', 'submit')
+            button.setAttribute('onclick', 'submit("'+eleid+'")')
+            maindiv.append(inputtag)
+            maindiv.append(button)
+            document.getElementById('mainform').append(maindiv)
+            outsidediv.append(maindiv)
         }
-        function submit() {
-            console.log('yes')
+        function submit(eid) {
+            editstate=false
+            document.getElementById('maindiv').style.display="block"
             tagtype = document.getElementById('tagtype').value
             data = document.getElementById('data').value
+            outsidediv=document.createElement('div')
+            outsidediv.setAttribute('id', 'element'+count)
             div = document.createElement('div')
             div.setAttribute('class', tagtype)
-            div.setAttribute('id', 'element'+count)
             div.innerHTML = data
             editbutton=document.createElement('button')
-            editbutton.setAttribute('onclick', "editElement('element"+count+"')")
-            editbutton.innerHTML ='Edit' 
-            div.append(editbutton)
             delbutton=document.createElement('button')
-            delbutton.setAttribute('onclick', "deleteElement('element"+count+"')")
+            editbutton.innerHTML ='Edit' 
             delbutton.innerHTML ='Delete' 
+            if(eid=="None"){
+            editbutton.setAttribute('onclick', "editElement('element"+count+"')")
+            div.append(editbutton)
+            delbutton.setAttribute('onclick', "deleteElement('element"+count+"')")
             div.append(delbutton)
+            }
+            else{
+            editbutton.setAttribute('onclick', "editElement('"+eid+"')")
+            div.append(editbutton)
+            delbutton.setAttribute('onclick', "deleteElement('"+eid+"')")
+            div.append(delbutton)
+
+            }
+            outsidediv.append(div)
+            if (eid!='None'){
+                console.log(eid)
+                document.getElementById(eid).innerHTML=""
+                document.getElementById(eid).append(div)
+            }
+            else{
             document.getElementById('data').remove()
             document.getElementById('tagtype').remove()
             document.getElementById('submit').remove()
-            document.getElementById('mainform').append(div)
+            document.getElementById('maindiv').remove()
+            document.getElementById('mainform').append(outsidediv)
             count=count+1
             createnewmain()
+            }
         }
         function createnewmain() {
             maindiv = document.createElement('div')
+            maindiv.setAttribute('id', 'maindiv')
             selecttag = document.createElement('select')
             selecttag.classList.add("btn", "bg-light", "my-3")
             selecttag.setAttribute('id', 'tagtype')
@@ -116,7 +184,7 @@
             button.classList.add("btn", "bg-light", "mb-3")
             button.innerHTML = 'Submit'
             button.setAttribute('id', 'submit')
-            button.setAttribute('onclick', 'submit()')
+            button.setAttribute('onclick', 'submit("None")')
             maindiv.append(inputtag)
             maindiv.append(button)
             document.getElementById('mainform').append(maindiv)
