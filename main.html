@@ -59,6 +59,27 @@
 </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+    function  toggleUploadButton(){
+
+        selectiontag=document.getElementById('tagtype')
+        if (selectiontag.value=='image'){
+            document.getElementById('imageUpload').style.display='block'
+            document.getElementById('data').style.display='none'
+
+        }
+        else{
+            document.getElementById('imageUpload').style.display='none'
+            document.getElementById('data').style.display='block'
+            var output = document.getElementById('imagePane');
+            output.src=''
+        }
+    }
+    function showimage(){
+        var output = document.getElementById('imagePane');
+        output.setAttribute('src',URL.createObjectURL(event.target.files[0]))  ;
+    }
+
+    
         function getmaindiv(clsname,innerText,eleid){
 
             maindiv = document.createElement('div')
@@ -66,8 +87,10 @@
             maindiv.setAttribute('id','maindiv')
             selecttag.classList.add("btn", "bg-light", "my-3")
             selecttag.setAttribute('id', 'tagtype')
-            options = ['subheading', 'mainheading', 'image', 'paragraph']
-            for (i = 0; i < options.length; i++) {
+            selecttag.setAttribute('onchange','toggleUploadButton()')
+            options = [ 'mainheading','subheading',  'paragraph','image']
+            for(i=0;i<options.length;i++) 
+            {
                 option = document.createElement('option')
                 option.setAttribute('value', options[i])
                 if (options[i]==clsname){
@@ -82,12 +105,23 @@
             inputtag.innerHTML=innerText
             inputtag.classList.add("form-control", "mb-3")
             inputtag.setAttribute('id', 'data')
+            imagePane=document.createElement('img')
+            imagePane.setAttribute('id','imagePane')
+            maindiv.append(imagePane)
+            imageupload=document.createElement('input')
+            imageupload.innerHTML='Upload Image'
+            imageupload.setAttribute('id','imageUpload')
+            imageupload.setAttribute('type','file')
+            imageupload.setAttribute('accept','image/*')
+            imageupload.setAttribute('onchange','showimage(event)')
+            imageupload.style.display='none'
             button = document.createElement('button')
             button.classList.add("btn", "bg-light", "mb-3")
             button.innerHTML = 'Submit'
             button.setAttribute('id', 'submit')
             button.setAttribute('onclick', 'submit("'+eleid+'")')
             maindiv.append(inputtag)
+            maindiv.append(imageupload)
             maindiv.append(button)
             return maindiv
         }
@@ -115,11 +149,9 @@
             outsidediv=document.getElementById(eleid)
             insidediv=outsidediv.getElementsByTagName('div')[0]
             clsname=insidediv.className
-            console.log(clsname)
             innercontent=insidediv.innerHTML
             innercontent_index=innercontent.indexOf('<')
             innerText=innercontent.slice(0,innercontent_index)
-
             insidediv.remove()
             maindiv=getmaindiv(clsname,innerText,eleid)
             document.getElementById('mainform').append(maindiv)
@@ -131,13 +163,19 @@
         function submit(eid) {
             editstate=false
             document.getElementById('maindiv').style.display="block"
-            tagtype = document.getElementById('tagtype').value
+            tagtype = document.getElementById('tagtype').value  
             data = document.getElementById('data').value
             outsidediv=document.createElement('div')
             outsidediv.setAttribute('id', 'element'+count)
             div = document.createElement('div')
             div.setAttribute('class', tagtype)
+            if (tagtype=='image'){
+                imagepane=document.getElementById('imagePane')
+                div.append(imagepane)
+            }
+            else{
             div.innerHTML = data
+        }
             editbutton=document.createElement('button')
             delbutton=document.createElement('button')
             editbutton.innerHTML ='Edit' 
@@ -166,6 +204,12 @@
             document.getElementById('tagtype').remove()
             document.getElementById('submit').remove()
             document.getElementById('maindiv').remove()
+            try{
+            document.getElementById('imageUpload').remove()
+            }
+            catch(e){
+
+            }
             document.getElementById('mainform').append(outsidediv)
             count=count+1
             createnewmain()
