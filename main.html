@@ -109,11 +109,16 @@
             maindiv.append(selecttag)
             inputtag = document.createElement('textarea')
             inputtag.setAttribute('value',innerText)
-            inputtag.innerHTML=innerText
             inputtag.classList.add("form-control", "mb-3")
             inputtag.setAttribute('id', 'data')
             imagePane=document.createElement('img')
             imagePane.setAttribute('id','imagePane')
+            if(clsname=='image'){
+                imagePane.setAttribute('src',innerText)
+            }
+            else{
+                inputtag.innerHTML=innerText
+            }
             maindiv.append(imagePane)
             imageupload=document.createElement('input')
             imageupload.innerHTML='Upload Image'
@@ -156,13 +161,21 @@
             outsidediv=document.getElementById(eleid)
             insidediv=outsidediv.getElementsByTagName('div')[0]
             clsname=insidediv.className
+            if(clsname=='image'){
+                innerText=document.getElementById('imagePane').src
+            }
+            else{
             innercontent=insidediv.innerHTML
             innercontent_index=innercontent.indexOf('<')
             innerText=innercontent.slice(0,innercontent_index)
+            }
             insidediv.remove()
             maindiv=getmaindiv(clsname,innerText,eleid)
             document.getElementById('mainform').append(maindiv)
             outsidediv.append(maindiv)
+            if(clsname=='image'){
+                toggleUploadButton()
+            }
         }
         //generate button
         //next line
