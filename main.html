@@ -8,22 +8,50 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="style.css">
     <style>
         .mainheading {
-            font-size: 40px;
+            font-size: 2em;
             font-weight: bolder;
             text-align: center;
         }
 
+        .mainheading:hover #button1 {
+            display: inline-block;
+        }
+
         .subheading {
-            font-size: 22px;
+            font-size: 1.5em;
             font-weight: bold;
         }
 
+        .subheading:hover #button1 {
+            display: inline-block;
+        }
+
         .paragraph {
-            font-size: 15px;
+            font-size: 1em;
             padding-top: 5px;
+        }
+
+        .paragraph:hover #button1 {
+            display: inline-block;
+        }
+
+        #button1 {
+            background-color: transparent;
+            border: none;
+            display: none;
+        }
+
+        i {
+            font-size: 20px;
+        }
+
+        img {
+            width: 100%;
         }
     </style>
 </head>
@@ -52,128 +80,127 @@
             </nav>
         </div>
     </div>
-<div>
-    <div id='mainform' class="container border-left border-right col-lg-8 my-5">
-    </div>
+    <div>
+        <div id='mainform' class="container border-left border-right col-lg-8 my-5">
+        </div>
         <button onclick="generate()" class="btn" id='generator'>Generate</button>
-</div>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function fetchlink(){
+        function fetchlink() {
             console.log('fetching link')
-            link=document.getElementById('data').value
-            var imagePane= document.getElementById('imagePane');
-            imagePane.setAttribute('src',link)
+            link = document.getElementById('data').value
+            var imagePane = document.getElementById('imagePane');
+            imagePane.setAttribute('src', link)
         }
-    function  toggleUploadButton(){
+        function toggleUploadButton() {
 
-        selectiontag=document.getElementById('tagtype')
-        if (selectiontag.value=='image'){
-            document.getElementById('imageUpload').style.display='block'
-            document.getElementById('data').setAttribute('placeholder','Please paste link of Image')
-            document.getElementById('data').setAttribute('onchange','fetchlink()')
+            selectiontag = document.getElementById('tagtype')
+            if (selectiontag.value == 'image') {
+                document.getElementById('imageUpload').style.display = 'block'
+                document.getElementById('data').setAttribute('placeholder', 'Please paste link of Image')
+                document.getElementById('data').setAttribute('onchange', 'fetchlink()')
+            }
+            else {
+                document.getElementById('imageUpload').style.display = 'none'
+                document.getElementById('data').setAttribute('placeholder', '')
+                document.getElementById('data').setAttribute('onchange', '')
+                var output = document.getElementById('imagePane');
+                output.src = ''
+            }
         }
-        else{
-            document.getElementById('imageUpload').style.display='none'
-            document.getElementById('data').setAttribute('placeholder','')
-            document.getElementById('data').setAttribute('onchange','')
+        function showimage() {
             var output = document.getElementById('imagePane');
-            output.src=''
+            output.setAttribute('src', URL.createObjectURL(event.target.files[0]));
         }
-    }
-    function showimage(){
-        var output = document.getElementById('imagePane');
-        output.setAttribute('src',URL.createObjectURL(event.target.files[0]))  ;
-    }
 
-    
-        function getmaindiv(clsname,innerText,eleid){
+
+        function getmaindiv(clsname, innerText, eleid) {
 
             maindiv = document.createElement('div')
             selecttag = document.createElement('select')
-            maindiv.setAttribute('id','maindiv')
+            maindiv.setAttribute('id', 'maindiv')
             selecttag.classList.add("btn", "bg-light", "my-3")
             selecttag.setAttribute('id', 'tagtype')
-            selecttag.setAttribute('onchange','toggleUploadButton()')
-            options = [ 'mainheading','subheading',  'paragraph','image']
-            for(i=0;i<options.length;i++) 
-            {
+            selecttag.setAttribute('onchange', 'toggleUploadButton()')
+            options = ['mainheading', 'subheading', 'paragraph', 'image']
+            for (i = 0; i < options.length; i++) {
                 option = document.createElement('option')
                 option.setAttribute('value', options[i])
-                if (options[i]==clsname){
-                    option.setAttribute('selected',"")
+                if (options[i] == clsname) {
+                    option.setAttribute('selected', "")
                 }
                 option.innerHTML = options[i]
                 selecttag.append(option)
             }
             maindiv.append(selecttag)
             inputtag = document.createElement('textarea')
-            inputtag.setAttribute('value',innerText)
+            inputtag.setAttribute('value', innerText)
             inputtag.classList.add("form-control", "mb-3")
             inputtag.setAttribute('id', 'data')
-            imagePane=document.createElement('img')
-            imagePane.setAttribute('id','imagePane')
-            if(clsname=='image'){
-                imagePane.setAttribute('src',innerText)
+            imagePane = document.createElement('img')
+            imagePane.setAttribute('id', 'imagePane')
+            if (clsname == 'image') {
+                imagePane.setAttribute('src', innerText)
             }
-            else{
-                inputtag.innerHTML=innerText
+            else {
+                inputtag.innerHTML = innerText
             }
             maindiv.append(imagePane)
-            imageupload=document.createElement('input')
-            imageupload.innerHTML='Upload Image'
-            imageupload.setAttribute('id','imageUpload')
-            imageupload.setAttribute('type','file')
-            imageupload.setAttribute('accept','image/*')
-            imageupload.setAttribute('onchange','showimage(event)')
-            imageupload.style.display='none'
+            imageupload = document.createElement('input')
+            imageupload.innerHTML = 'Upload Image'
+            imageupload.setAttribute('id', 'imageUpload')
+            imageupload.setAttribute('type', 'file')
+            imageupload.setAttribute('accept', 'image/*')
+            imageupload.setAttribute('onchange', 'showimage(event)')
+            imageupload.style.display = 'none'
             button = document.createElement('button')
             button.classList.add("btn", "bg-light", "mb-3")
             button.innerHTML = 'Submit'
             button.setAttribute('id', 'submit')
-            button.setAttribute('onclick', 'submit("'+eleid+'")')
+            button.setAttribute('onclick', 'submit("' + eleid + '")')
             maindiv.append(inputtag)
             maindiv.append(imageupload)
             maindiv.append(button)
             return maindiv
         }
-        count=1        
-        editstate=false
+        count = 1
+        editstate = false
         function generate() {
             document.getElementById('data').remove()
             document.getElementById('tagtype').remove()
             document.getElementById('generator').remove()
             document.getElementById('submit').remove()
         }
-        function deleteElement(eleid){
+        function deleteElement(eleid) {
             document.getElementById(eleid).remove()
             //document.getElementById('maindiv').style.display="block"
         }
-        function editElement(eleid){
-            if (editstate==false){
-                editstate=true
+        function editElement(eleid) {
+            if (editstate == false) {
+                editstate = true
             }
-            else{
+            else {
                 alert('Can only edit 1 element at a time')
                 return
             }
-            document.getElementById('maindiv').style.display="none"
-            outsidediv=document.getElementById(eleid)
-            insidediv=outsidediv.getElementsByTagName('div')[0]
-            clsname=insidediv.className
-            if(clsname=='image'){
-                innerText=document.getElementById('imagePane').src
+            document.getElementById('maindiv').style.display = "none"
+            outsidediv = document.getElementById(eleid)
+            insidediv = outsidediv.getElementsByTagName('div')[0]
+            clsname = insidediv.className
+            if (clsname == 'image') {
+                innerText = document.getElementById('imagePane').src
             }
-            else{
-            innercontent=insidediv.innerHTML
-            innercontent_index=innercontent.indexOf('<')
-            innerText=innercontent.slice(0,innercontent_index)
+            else {
+                innercontent = insidediv.innerHTML
+                innercontent_index = innercontent.indexOf('<')
+                innerText = innercontent.slice(0, innercontent_index)
             }
             insidediv.remove()
-            maindiv=getmaindiv(clsname,innerText,eleid)
+            maindiv = getmaindiv(clsname, innerText, eleid)
             document.getElementById('mainform').append(maindiv)
             outsidediv.append(maindiv)
-            if(clsname=='image'){
+            if (clsname == 'image') {
                 toggleUploadButton()
             }
         }
@@ -181,63 +208,67 @@
         //next line
         //
         function submit(eid) {
-            editstate=false
-            document.getElementById('maindiv').style.display="block"
-            tagtype = document.getElementById('tagtype').value  
+            editstate = false
+            document.getElementById('maindiv').style.display = "block"
+            tagtype = document.getElementById('tagtype').value
             data = document.getElementById('data').value
-            outsidediv=document.createElement('div')
-            outsidediv.setAttribute('id', 'element'+count)
+            outsidediv = document.createElement('div')
+            outsidediv.setAttribute('id', 'element' + count)
             div = document.createElement('div')
             div.setAttribute('class', tagtype)
-            if (tagtype=='image'){
-                imagepane=document.getElementById('imagePane')
+            if (tagtype == 'image') {
+                imagepane = document.getElementById('imagePane')
                 div.append(imagepane)
             }
-            else{
-            div.innerHTML = data
-        }
-            editbutton=document.createElement('button')
-            delbutton=document.createElement('button')
-            editbutton.innerHTML ='Edit' 
-            delbutton.innerHTML ='Delete' 
-            if(eid=="None"){
-            editbutton.setAttribute('onclick', "editElement('element"+count+"')")
-            div.append(editbutton)
-            delbutton.setAttribute('onclick', "deleteElement('element"+count+"')")
-            div.append(delbutton)
+            else {
+                div.innerHTML = data
             }
-            else{
-            editbutton.setAttribute('onclick', "editElement('"+eid+"')")
-            div.append(editbutton)
-            delbutton.setAttribute('onclick', "deleteElement('"+eid+"')")
-            div.append(delbutton)
+            editbutton = document.createElement('button')
+            editbutton.setAttribute('id', 'button1')
+            editbutton.classList.add("text-success")
+            delbutton = document.createElement('button')
+            delbutton.setAttribute('id', 'button1')
+            delbutton.classList.add("text-danger")
+            editbutton.innerHTML = '<i class="fad fa-edit px-2"></i>'
+            delbutton.innerHTML = '<i class="fad fa-trash-alt px-2"></i>'
+            if (eid == "None") {
+                editbutton.setAttribute('onclick', "editElement('element" + count + "')")
+                div.append(editbutton)
+                delbutton.setAttribute('onclick', "deleteElement('element" + count + "')")
+                div.append(delbutton)
+            }
+            else {
+                editbutton.setAttribute('onclick', "editElement('" + eid + "')")
+                div.append(editbutton)
+                delbutton.setAttribute('onclick', "deleteElement('" + eid + "')")
+                div.append(delbutton)
 
             }
             outsidediv.append(div)
-            if (eid!='None'){
+            if (eid != 'None') {
                 console.log(eid)
-                document.getElementById(eid).innerHTML=""
+                document.getElementById(eid).innerHTML = ""
                 document.getElementById(eid).append(div)
             }
-            else{
-            document.getElementById('data').remove()
-            document.getElementById('tagtype').remove()
-            document.getElementById('submit').remove()
-            document.getElementById('maindiv').remove()
-            try{
-            document.getElementById('imageUpload').remove()
-            }
-            catch(e){
+            else {
+                document.getElementById('data').remove()
+                document.getElementById('tagtype').remove()
+                document.getElementById('submit').remove()
+                document.getElementById('maindiv').remove()
+                try {
+                    document.getElementById('imageUpload').remove()
+                }
+                catch (e) {
 
+                }
+                document.getElementById('mainform').append(outsidediv)
+                count = count + 1
+                createnewmain()
             }
-            document.getElementById('mainform').append(outsidediv)
-            count=count+1
-            createnewmain()
-            }
-            document.getElementById('maindiv').style.display="block"
+            document.getElementById('maindiv').style.display = "block"
         }
         function createnewmain() {
-            maindiv=getmaindiv("","","None")
+            maindiv = getmaindiv("", "", "None")
             document.getElementById('mainform').append(maindiv)
         }
         createnewmain()
