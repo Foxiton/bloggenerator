@@ -94,19 +94,24 @@
             imagePane.setAttribute('src', link)
         }
         function toggleUploadButton() {
+            console.log('toggling')
 
             selectiontag = document.getElementById('tagtype')
             if (selectiontag.value == 'image') {
                 document.getElementById('imageUpload').style.display = 'block'
+                document.getElementById('imagePane').style.display = 'block'
+                document.getElementById('imageProgressBar').style.display = 'block'
                 document.getElementById('data').setAttribute('placeholder', 'Please paste link of Image')
                 document.getElementById('data').setAttribute('onchange', 'fetchlink()')
             }
             else {
                 document.getElementById('imageUpload').style.display = 'none'
+                document.getElementById('imageProgressBar').style.display = 'none'
+                document.getElementById('imagePane').style.display = 'none'
                 document.getElementById('data').setAttribute('placeholder', '')
                 document.getElementById('data').setAttribute('onchange', '')
-                var output = document.getElementById('imagePane');
-                output.src = ''
+                //var output = document.getElementById('imagePane');
+                //output.src = ''
             }
         }
         function showimage() {
@@ -114,19 +119,29 @@
             output.setAttribute('src', URL.createObjectURL(event.target.files[0]));
         }
 
+        options_dict={
+            'Main heading':'mainheading',
+            'Sub heading':'subheading',
+            'Paragraph':'paragraph',
+            'Image':'image'
+        }
+        function scaleImage(){
+            var imagePane= document.getElementById('imagePane');
+            imageProgressBar=document.getElementById('imageProgressBar')
+            imagePane.setAttribute('style','width:'+imageProgressBar.value+'%')
+        }
 
         function getmaindiv(clsname, innerText, eleid) {
-
             maindiv = document.createElement('div')
             selecttag = document.createElement('select')
             maindiv.setAttribute('id', 'maindiv')
             selecttag.classList.add("btn", "bg-light", "my-3")
             selecttag.setAttribute('id', 'tagtype')
             selecttag.setAttribute('onchange', 'toggleUploadButton()')
-            options = ['mainheading', 'subheading', 'paragraph', 'image']
+            options=Object.keys(options_dict)
             for (i = 0; i < options.length; i++) {
                 option = document.createElement('option')
-                option.setAttribute('value', options[i])
+                option.setAttribute('value', options_dict[options[i]])
                 if (options[i] == clsname) {
                     option.setAttribute('selected', "")
                 }
@@ -149,10 +164,17 @@
             maindiv.append(imagePane)
             imageupload = document.createElement('input')
             imageupload.innerHTML = 'Upload Image'
-            imageupload.setAttribute('id', 'imageUpload')
-            imageupload.setAttribute('type', 'file')
-            imageupload.setAttribute('accept', 'image/*')
-            imageupload.setAttribute('onchange', 'showimage(event)')
+            imageupload.setAttribute('id','imageUpload')
+            imageupload.setAttribute('type','file')
+            imageupload.setAttribute('accept','image/*')
+            imageupload.setAttribute('onchange','showimage(event)')
+            imageProgressBar=document.createElement('input')
+            imageProgressBar.setAttribute('type','range')
+            imageProgressBar.setAttribute('min','0')
+            imageProgressBar.setAttribute('max','100')
+            imageProgressBar.setAttribute('value','100')
+            imageProgressBar.setAttribute('id','imageProgressBar')
+            imageProgressBar.setAttribute('onchange','scaleImage()')
             imageupload.style.display = 'none'
             button = document.createElement('button')
             button.classList.add("btn", "bg-light", "mb-3")
@@ -160,6 +182,7 @@
             button.setAttribute('id', 'submit')
             button.setAttribute('onclick', 'submit("' + eleid + '")')
             maindiv.append(inputtag)
+            maindiv.append(imageProgressBar)
             maindiv.append(imageupload)
             maindiv.append(button)
             return maindiv
@@ -189,7 +212,8 @@
             insidediv = outsidediv.getElementsByTagName('div')[0]
             clsname = insidediv.className
             if (clsname == 'image') {
-                innerText = document.getElementById('imagePane').src
+                imagePane=document.getElementById('imagePane')
+                innerText = imagePane.src
             }
             else {
                 innercontent = insidediv.innerHTML
@@ -216,8 +240,10 @@
             outsidediv.setAttribute('id', 'element' + count)
             div = document.createElement('div')
             div.setAttribute('class', tagtype)
+            console.log(tagtype)
             if (tagtype == 'image') {
                 imagepane = document.getElementById('imagePane')
+                imagepane.setAttribute('id','imagePane-submitted')
                 div.append(imagepane)
             }
             else {
@@ -242,7 +268,6 @@
                 div.append(editbutton)
                 delbutton.setAttribute('onclick', "deleteElement('" + eid + "')")
                 div.append(delbutton)
-
             }
             outsidediv.append(div)
             if (eid != 'None') {
@@ -259,7 +284,6 @@
                     document.getElementById('imageUpload').remove()
                 }
                 catch (e) {
-
                 }
                 document.getElementById('mainform').append(outsidediv)
                 count = count + 1
@@ -272,10 +296,7 @@
             document.getElementById('mainform').append(maindiv)
         }
         createnewmain()
-
-
-
-
+        toggleUploadButton()
         $("#search-icon").click(function () {
             $(".nav").toggleClass("search");
             $(".nav").toggleClass("no-search");
