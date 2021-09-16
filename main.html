@@ -88,8 +88,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         function fetchlink() {
-            console.log('fetching link')
             link = document.getElementById('data').value
+            quotation_index=link.indexOf('?')
+            if(quotation_index!=-1){
+                link=link.slice(0,quotation_index)
+                console.log(link)
+            }
             var imagePane = document.getElementById('imagePane');
             imagePane.setAttribute('src', link)
         }
@@ -125,6 +129,7 @@
             'Paragraph':'paragraph',
             'Image':'image'
         }
+
         function scaleImage(){
             var imagePane= document.getElementById('imagePane');
             imageProgressBar=document.getElementById('imageProgressBar')
@@ -294,9 +299,9 @@
         function createnewmain() {
             maindiv = getmaindiv("", "", "None")
             document.getElementById('mainform').append(maindiv)
+            toggleUploadButton()
         }
         createnewmain()
-        toggleUploadButton()
         $("#search-icon").click(function () {
             $(".nav").toggleClass("search");
             $(".nav").toggleClass("no-search");
