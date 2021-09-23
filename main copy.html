@@ -89,9 +89,9 @@
     <script>
         function fetchlink() {
             link = document.getElementById('data').value
-            quotation_index = link.indexOf('?')
-            if (quotation_index != -1) {
-                link = link.slice(0, quotation_index)
+            quotation_index=link.indexOf('?')
+            if(quotation_index!=-1){
+                link=link.slice(0,quotation_index)
                 console.log(link)
             }
             var imagePane = document.getElementById('imagePane');
@@ -102,9 +102,9 @@
 
             selectiontag = document.getElementById('tagtype')
             if (selectiontag.value == 'image') {
-                document.getElementById('imageUpload').style.display = 'inline-block'
-                document.getElementById('imagePane').style.display = 'inline-block'
-                document.getElementById('imageProgressBar').style.display = 'inline-block'
+                document.getElementById('imageUpload').style.display = 'block'
+                document.getElementById('imagePane').style.display = 'block'
+                document.getElementById('imageProgressBar').style.display = 'block'
                 document.getElementById('data').setAttribute('placeholder', 'Please paste link of Image')
                 document.getElementById('data').setAttribute('onchange', 'fetchlink()')
             }
@@ -123,17 +123,17 @@
             output.setAttribute('src', URL.createObjectURL(event.target.files[0]));
         }
 
-        options_dict = {
-            'Main heading': 'mainheading',
-            'Sub heading': 'subheading',
-            'Paragraph': 'paragraph',
-            'Image': 'image'
+        options_dict={
+            'Main heading':'mainheading',
+            'Sub heading':'subheading',
+            'Paragraph':'paragraph',
+            'Image':'image'
         }
 
-        function scaleImage() {
-            var imagePane = document.getElementById('imagePane');
-            imageProgressBar = document.getElementById('imageProgressBar')
-            imagePane.setAttribute('style', 'width:' + imageProgressBar.value + '%')
+        function scaleImage(){
+            var imagePane= document.getElementById('imagePane');
+            imageProgressBar=document.getElementById('imageProgressBar')
+            imagePane.setAttribute('style','width:'+imageProgressBar.value+'%')
         }
 
         function getmaindiv(clsname, innerText, eleid) {
@@ -143,7 +143,7 @@
             selecttag.classList.add("btn", "bg-light", "my-3")
             selecttag.setAttribute('id', 'tagtype')
             selecttag.setAttribute('onchange', 'toggleUploadButton()')
-            options = Object.keys(options_dict)
+            options=Object.keys(options_dict)
             for (i = 0; i < options.length; i++) {
                 option = document.createElement('option')
                 option.setAttribute('value', options_dict[options[i]])
@@ -169,28 +169,27 @@
             maindiv.append(imagePane)
             imageupload = document.createElement('input')
             imageupload.innerHTML = 'Upload Image'
-            imageupload.setAttribute('id', 'imageUpload')
-            imageupload.setAttribute('type', 'file')
-            imageupload.setAttribute('accept', 'image/*')
-            imageupload.setAttribute('onchange', 'showimage(event)')
-            imageProgressBar = document.createElement('input')
-            imageProgressBar.setAttribute('type', 'range')
-            imageProgressBar.setAttribute('min', '0')
-            imageProgressBar.setAttribute('max', '100')
-            imageProgressBar.setAttribute('value', '100')
-            imageProgressBar.setAttribute('id', 'imageProgressBar')
-            imageProgressBar.setAttribute('onchange', 'scaleImage()')
+            imageupload.setAttribute('id','imageUpload')
+            imageupload.setAttribute('type','file')
+            imageupload.setAttribute('accept','image/*')
+            imageupload.setAttribute('onchange','showimage(event)')
+            imageProgressBar=document.createElement('input')
+            imageProgressBar.setAttribute('type','range')
+            imageProgressBar.setAttribute('min','0')
+            imageProgressBar.setAttribute('max','100')
+            imageProgressBar.setAttribute('value','100')
+            imageProgressBar.setAttribute('id','imageProgressBar')
+            imageProgressBar.setAttribute('onchange','scaleImage()')
             imageupload.style.display = 'none'
             button = document.createElement('button')
-            button.classList.add("btn", "bg-light", "mb-3", "col-lg-4")
+            button.classList.add("btn", "bg-light", "mb-3")
             button.innerHTML = 'Submit'
             button.setAttribute('id', 'submit')
             button.setAttribute('onclick', 'submit("' + eleid + '")')
             maindiv.append(inputtag)
-            maindiv.append(button)
             maindiv.append(imageProgressBar)
             maindiv.append(imageupload)
-
+            maindiv.append(button)
             return maindiv
         }
         count = 1
@@ -218,7 +217,7 @@
             insidediv = outsidediv.getElementsByTagName('div')[0]
             clsname = insidediv.className
             if (clsname == 'image') {
-                imagePane = document.getElementById('imagePane')
+                imagePane=document.getElementById('imagePane')
                 innerText = imagePane.src
             }
             else {
@@ -247,7 +246,7 @@
             console.log(tagtype)
             if (tagtype == 'image') {
                 imagepane = document.getElementById('imagePane')
-                imagepane.setAttribute('id', 'imagePane-submitted')
+                imagepane.setAttribute('id','imagePane-submitted')
                 div.append(imagepane)
             }
             else {
