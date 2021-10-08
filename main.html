@@ -53,6 +53,14 @@
         img {
             width: 100%;
         }
+        .uploadbtn{
+                background-color:#e3e3e3;
+                color:#333;
+                border:1px solid #e6e6e6;
+                border-radius:3px;
+                padding:6px 12px;
+                font-size:16px;
+                }
     </style>
 </head>
 
@@ -129,13 +137,20 @@
             'Paragraph': 'paragraph',
             'Image': 'image'
         }
+        alignMap= {
+            'left align':'left',
+            'center align':'center',
+            'right align':'right',
+        }
 
         function scaleImage() {
             var imagePane = document.getElementById('imagePane');
             imageProgressBar = document.getElementById('imageProgressBar')
             imagePane.setAttribute('style', 'width:' + imageProgressBar.value + '%')
         }
-
+        function align(side){
+            document.getElementById('data').style.textAlign=side;
+        }
         function getmaindiv(clsname, innerText, eleid) {
             maindiv = document.createElement('div')
             selecttag = document.createElement('select')
@@ -154,6 +169,49 @@
                 selecttag.append(option)
             }
             maindiv.append(selecttag)
+
+            left_button=document.createElement('button')
+            //left_button.innerHTML='Left'
+            left_icon=document.createElement('img')
+            left_icon.src="icons/left-align.png"
+            left_button.append(left_icon)
+            left_button.setAttribute('onclick',"align('left')")
+
+            right_button=document.createElement('button')
+            right_icon=document.createElement('img')
+            right_icon.src="icons/right-align.png"
+            right_button.append(right_icon)
+            right_button.setAttribute('onclick',"align('right')")
+            //right_button.innerHTML='Right'
+
+            center_button=document.createElement('button')
+            center_icon=document.createElement('img')
+            center_icon.src="icons/center-align.png"
+            center_button.append(center_icon)
+            center_button.setAttribute('onclick',"align('center')")
+            //center_button.innerHTML='Center'
+
+            maindiv.append(left_button)
+            maindiv.append(center_button)
+            maindiv.append(right_button)
+
+            /*
+            alignTag= document.createElement('select')
+            alignTag.classList.add("btn", "bg-light", "my-3")
+            alignTag.setAttribute('id', 'alignmentType')
+            //alignTag.setAttribute('onchange', 'toggleUploadButton()')
+            alignOptions = Object.keys(alignMap)
+            for (i = 0; i < alignOptions.length; i++) {
+                option = document.createElement('option')
+                option.setAttribute('value', alignMap[alignOptions[i]])
+                if (alignMap[alignOptions[i]] == 'center') {
+                    option.setAttribute('selected', "")
+                }
+                option.innerHTML = alignOptions[i]
+                alignTag.append(option)
+            }
+            maindiv.append(alignTag)
+            */
             inputtag = document.createElement('textarea')
             inputtag.setAttribute('value', innerText)
             inputtag.classList.add("form-control", "mb-3")
@@ -168,6 +226,7 @@
             }
             maindiv.append(imagePane)
             imageupload = document.createElement('input')
+            imageupload.classList.add("uploadbtn")
             imageupload.innerHTML = 'Upload Image'
             imageupload.setAttribute('id', 'imageUpload')
             imageupload.setAttribute('type', 'file')
@@ -190,7 +249,6 @@
             maindiv.append(button)
             maindiv.append(imageProgressBar)
             maindiv.append(imageupload)
-
             return maindiv
         }
         count = 1
@@ -227,10 +285,12 @@
                 innerText = innercontent.slice(0, innercontent_index)
             }
             insidediv.remove()
+            alignment_value=insidediv.style.textAlign;
             maindiv = getmaindiv(clsname, innerText, eleid)
             document.getElementById('mainform').append(maindiv)
             outsidediv.append(maindiv)
             toggleUploadButton()
+            align(alignment_value);
         }
         //generate button
         //next line
@@ -240,6 +300,7 @@
             document.getElementById('maindiv').style.display = "block"
             tagtype = document.getElementById('tagtype').value
             data = document.getElementById('data').value
+            alignment_value=document.getElementById('data').style.textAlign;
             outsidediv = document.createElement('div')
             outsidediv.setAttribute('id', 'element' + count)
             div = document.createElement('div')
@@ -253,6 +314,7 @@
             else {
                 div.innerHTML = data
             }
+            div.style.textAlign=alignment_value;
             editbutton = document.createElement('button')
             editbutton.setAttribute('id', 'button1')
             editbutton.classList.add("text-success")
@@ -298,6 +360,7 @@
         function createnewmain(classname) {
             maindiv = getmaindiv(classname, "", "None")
             document.getElementById('mainform').append(maindiv)
+            align('center');
             toggleUploadButton()
         }
         createnewmain()
