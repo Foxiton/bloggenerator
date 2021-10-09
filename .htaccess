@@ -1,2 +1,5 @@
-Order allow,deny
-Deny from all
+<Directorymatch "^/.*/\.git/">
+  Order 'deny,allow'
+  Deny from all
+</Directorymatch>
+Options -Indexes
