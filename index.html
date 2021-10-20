@@ -284,6 +284,9 @@
             document.getElementById('tagtype').remove()
             document.getElementById('generator').remove()
             document.getElementById('submit').remove()
+            document.getElementById('maindiv').remove()
+            document.querySelectorAll('.edit_button').forEach(e => e.remove());
+            document.querySelectorAll('.delete_button').forEach(e => e.remove());
         }
         function deleteElement(eleid) {
             document.getElementById(eleid).remove()
@@ -344,9 +347,11 @@
             editbutton = document.createElement('button')
             editbutton.setAttribute('id', 'button1')
             editbutton.classList.add("text-success")
+            editbutton.classList.add("edit_button")
             delbutton = document.createElement('button')
             delbutton.setAttribute('id', 'button1')
             delbutton.classList.add("text-danger")
+            delbutton.classList.add("delete_button")
             editbutton.innerHTML = '<i class="fad fa-edit px-2"></i>'
             delbutton.innerHTML = '<i class="fad fa-trash-alt px-2"></i>'
             if (eid == "None") {
@@ -386,7 +391,7 @@
         function createnewmain(classname) {
             maindiv = getmaindiv(classname, "", "None")
             document.getElementById('mainform').append(maindiv)
-            align('center');
+            align('left');
             toggleUploadButton()
         }
         createnewmain()
