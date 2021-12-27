@@ -115,7 +115,6 @@
             imagePane.setAttribute('src', link)
         }
         function toggleUploadButton() {
-            console.log('toggling')
 
             selectiontag = document.getElementById('tagtype')
             if (selectiontag.value == 'image') {
@@ -157,6 +156,18 @@
             imageProgressBar = document.getElementById('imageProgressBar')
             imagePane.setAttribute('style', 'width:' + imageProgressBar.value + '%')
         }
+        function toggleAlignMent(){
+            value=document.getElementById('data').value;
+            selected_class=document.getElementById('tagtype').value
+            if (value==""){
+                if (selected_class=='mainheading'){
+                    align('center');
+                }
+                else{
+                    align('left');
+                }
+            }
+        }
         function align(side) {
             document.getElementById('data').style.textAlign = side;
         }
@@ -166,7 +177,7 @@
             maindiv.setAttribute('id', 'maindiv')
             selecttag.classList.add("btn", "bg-light", "my-3")
             selecttag.setAttribute('id', 'tagtype')
-            selecttag.setAttribute('onchange', 'toggleUploadButton()')
+            selecttag.setAttribute('onchange', 'toggleUploadButton();toggleAlignMent()')
             options = Object.keys(options_dict)
             for (i = 0; i < options.length; i++) {
                 option = document.createElement('option')
@@ -335,6 +346,7 @@
         //next line
         //
         function submit(eid) {
+            data = document.getElementById('data').value
             editstate = false
             document.getElementById('maindiv').style.display = "block"
             tagtype = document.getElementById('tagtype').value
@@ -344,7 +356,6 @@
             outsidediv.setAttribute('id', 'element' + count)
             div = document.createElement('div')
             div.setAttribute('class', tagtype)
-            console.log(tagtype)
             if (tagtype == 'image') {
                 imagepane = document.getElementById('imagePane')
                 imagepane.setAttribute('id', 'imagePane-submitted')
@@ -401,7 +412,12 @@
         function createnewmain(classname) {
             maindiv = getmaindiv(classname, "", "None")
             document.getElementById('mainform').append(maindiv)
-            align('left');
+            if (classname == 'mainheading' || classname == null) {
+                align('center');
+            }
+            else{
+                align('left');
+            }
             toggleUploadButton()
         }
         createnewmain()
